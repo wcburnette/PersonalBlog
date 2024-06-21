@@ -2,7 +2,6 @@ const blogForm = document.getElementById('blog-form');
 const usernameInput = document.getElementById('username');
 const titleInput = document.getElementById('title');
 const contentInput = document.getElementById('content');
-const button = document.querySelector('.button');
 
 const formSubmit = function(event) {
     event.preventDefault();
@@ -11,6 +10,11 @@ const formSubmit = function(event) {
     const formTitle = titleInput.value.trim();
     const formContent = contentInput.value.trim();
 
+    if (!formUsername || !formTitle || !formContent) {
+        displayErrorMessage('Please complete the form.');
+        return;
+    }
+
     const formData = {
         username: formUsername,
         title: formTitle,
@@ -18,17 +22,52 @@ const formSubmit = function(event) {
     };
 
     saveToLocalStorage(formData);
-    document.location.href='blog.html'
-};
 
-const saveToLocalStorage = function(data) {
-    let blogs = readLocalStorage();
-    blogs.push(data);
-    localStorage.setItem('blogs', JSON.stringify(blogs));
-};
-
-const readLocalStorage = function() {
-    return JSON.parse(localStorage.getItem('blogs')) || [];
+    window.location.href = 'posts.html';
 };
 
 blogForm.addEventListener('submit', formSubmit);
+
+function displayErrorMessage(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.textContent = message;
+    errorDiv.classList.add('error-message');
+    blogForm.appendChild(errorDiv);
+
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 3000);
+}
+
+function saveToLocalStorage(formData) {
+    let posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+    posts.push(formData);
+    localStorage.setItem('blogPosts', JSON.stringify(posts));
+}
+
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+const enableDarkMode = () => {
+    document.body.classList.add('darkmode');
+    localStorage.setItem('darkMode', 'enabled');
+};
+
+const disableDarkMode = () => {
+    document.body.classList.remove('darkmode');
+    localStorage.setItem('darkMode', 'disabled');
+};
+
+const currentTheme = localStorage.getItem('darkMode');
+if (currentTheme === 'enabled') {
+    enableDarkMode();
+} else {
+    disableDarkMode();
+}
+
+darkModeToggle.addEventListener('change', () => {
+    if (darkModeToggle.checked) {
+        enableDarkMode();
+    } else {
+        disableDarkMode();
+    }
+});
