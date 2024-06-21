@@ -38,5 +38,7 @@ Developer Portfolio
 Includes a footer link directing users to the developer's portfolio for more information about the application and its creator.
 
 Deployed Site
+https://wcburnette.github.io/PersonalBlog/
 
 Screen Record
+https://1drv.ms/v/s!Ajvx8AL_kpmUnW7Rjl22xy4qcBGh?e=eKzMI4
